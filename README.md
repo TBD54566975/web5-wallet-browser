@@ -39,7 +39,7 @@ npm run build
 * navigate to `web5-wallet-browser`
 * select the `extension` directory. The extension should now appear in the tiled list of installed extensions
 * click the puzzle icon to the right of the omnibar
-* click the pushpin icon next to Janky Wallet
+* click the pushpin icon next to Web5 Wallet
 
 ⚠️ _TODO: include video showing installation steps_
 
