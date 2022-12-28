@@ -2,9 +2,11 @@
 
 <!-- TOC -->
 
-* [Contributors](#contributors)
-* [Maintainers](#maintainers)
-* [Governance Committee](#governance-committee)
+- [TBD Open Source Project Governance](#tbd-open-source-project-governance)
+  - [Contributors](#contributors)
+  - [Maintainers](#maintainers)
+    - [Maintainer activities](#maintainer-activities)
+  - [Governance Committee](#governance-committee)
 
 <!-- /TOC -->
 
@@ -61,7 +63,7 @@ The current GC members are:
 * Angie Jones, Head of Developer Relations, TBD
 * Julie Kim, Head of Legal, TBD
 * Nidhi Nahar, Head of Patents and Open Source, Block
-* Andrew Lee Rubinger, Head of Open Source, TBD
+* Andrew Lee Rubinger, Head of Open Source Programs, TBD
 * Max Sills, Counsel for Intellectual Property, Block
 
 Members are not to be contacted individually. The GC may be reached through `tbd-open-source-governance@squareup.com` and is an available resource in mediation or for sensitive cases beyond the scope of project maintainers. It operates as a "Self-appointing council or board" as defined by Red Hat: [Open Source Governance Models](https://www.redhat.com/en/blog/understanding-open-source-governance-models).
