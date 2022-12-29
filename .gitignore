@@ -1,1 +1,4 @@
 .DS_Store
+extension/external
+node_modules
+package-lock.json
