@@ -1,0 +1,28 @@
+{
+	"manifest_version": 3,
+
+	"name": "__MSG_extension_name__",
+	"description": "__MSG_extension_description__",
+	"default_locale": "en",
+	"version": "1.0",
+
+	"icons": {
+		 "16": "/shared/img/icon.png",
+		 "32": "/shared/img/icon.png",
+		 "48": "/shared/img/icon.png",
+		"128": "/shared/img/icon.png"
+	},
+
+	"permissions": [
+		"storage"
+	],
+
+	"host_permissions": [
+		"<all_urls>"
+	],
+
+	"background": {
+		"service_worker": "/background/index.mjs",
+		"type": "module"
+	}
+}
