@@ -1,6 +1,14 @@
 export let browser = globalThis.browser ?? globalThis.chrome;
 
 /**
+ * Determines whether the current context is the extension background script.
+ * @return {boolean}
+ */
+export function isBackground() {
+ return globalThis.serviceWorker?.scriptURL === browser.runtime.getURL("/background/index.mjs");
+}
+
+/**
  * Sends a message to the extension background script.
  * @param {string} name - The name of the message.
  * @param {Object} args - The arguments for the message.
