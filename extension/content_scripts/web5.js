@@ -123,6 +123,19 @@ context.addEventListener(seed + "-in", (event) => {
 context.web5 ??= {
 	dwn: {
 		/**
+		 * Applies a message to the user's DWN (assuming access has been granted).
+		 * @param {Object} message - The message.
+		 * @param {"CollectionsQuery"|"CollectionsWrite"} message.method - The method to apply.
+		 * @param {*} [message.data] - The data to use with the given `method`.
+		 * @param {Object} [message.options] - Additional options for the given `method`.
+		 * @param {"application/json"} [message.options.dataFormat] - The format of the given `data`.  Required if `data` is given.
+		 * @return {Promise}
+		 */
+		async processMessage(message) {
+			return send("web5.dwn.processMessage", { message });
+		},
+
+		/**
 		 * Requests access to the user's DWN.
 		 * @return {Promise}
 		 */

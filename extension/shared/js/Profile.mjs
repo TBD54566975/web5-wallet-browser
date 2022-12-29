@@ -13,6 +13,16 @@ export async function createProfile(name) {
 /**
  * Finds the first matching profile.
  * @param {Array} profiles - The profiles.
+ * @param {string} did - The did to match.
+ * @return {Object}
+ */
+export function profileForDID(profiles, did) {
+  return profiles.find((profile) => profile.did === did);
+}
+
+/**
+ * Finds the first matching profile.
+ * @param {Array} profiles - The profiles.
  * @param {string} name - The name to match.
  * @return {Object}
  */

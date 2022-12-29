@@ -17,6 +17,7 @@ import { getHost } from "/shared/js/URL.mjs";
  */
 async function handleAPI({ id, name, args }, sender) {
 	const routes = {
+		"web5.dwn.processMessage": web5.dwn.processMessage,
 		"web5.dwn.requestAccess": web5.dwn.requestAccess,
 	};
 
