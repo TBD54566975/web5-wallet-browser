@@ -121,6 +121,15 @@ context.addEventListener(seed + "-in", (event) => {
 }, { capture: true, passive: true });
 
 context.web5 ??= {
+	dwn: {
+		/**
+		 * Requests access to the user's DWN.
+		 * @return {Promise}
+		 */
+		async requestAccess() {
+			return send("web5.dwn.requestAccess", { });
+		},
+	},
 };
 
 })();

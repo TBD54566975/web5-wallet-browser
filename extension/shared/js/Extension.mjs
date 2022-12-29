@@ -9,6 +9,24 @@ export function isBackground() {
 }
 
 /**
+ * Finds all elements with `data-localize` and replaces the value of each property (separated by `,`) with the text of the message with the same key.
+ * 
+ * @example
+ * `<div data-localize="title,textContent=foo" title="bar"></div>` will replace the `title` with the value of the message named `"bar"` and the `textContent` with the value of the message named `"foo"`.
+ */
+export function localizeHTML() {
+	document.body.setAttribute("dir", browser.i18n.getMessage("@@bidi_dir"));
+
+	for (let node of document.querySelectorAll("[data-localize]")) {
+		for (let config of node.dataset.localize.split(",")) {
+			let [ propertyToLocalize, messageKey ] = config.split("=");
+			node[propertyToLocalize] = browser.i18n.getMessage(messageKey || node[propertyToLocalize]);
+		}
+		delete node.dataset.localize;
+	}
+}
+
+/**
  * Sends a message to the extension background script.
  * @param {string} name - The name of the message.
  * @param {Object} args - The arguments for the message.

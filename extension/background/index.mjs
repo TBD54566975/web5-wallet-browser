@@ -1,4 +1,6 @@
+import * as web5 from "/background/web5/index.mjs";
 import { takeFirstMatching } from "/shared/js/Array.mjs";
+import { PopupDWNRequestAccess } from "/shared/js/Constants.mjs";
 import { generateDID } from "/shared/js/DID.mjs";
 import { browser, sendToContentScript } from "/shared/js/Extension.mjs";
 import { createProfile, profileForName } from "/shared/js/Profile.mjs";
@@ -15,6 +17,7 @@ import { getHost } from "/shared/js/URL.mjs";
  */
 async function handleAPI({ id, name, args }, sender) {
 	const routes = {
+		"web5.dwn.requestAccess": web5.dwn.requestAccess,
 	};
 
 	if (!(name in routes))
@@ -32,6 +35,7 @@ async function handleAPI({ id, name, args }, sender) {
  */
 async function handlePopup({ name, args }, sender) {
 	const routes = {
+		[PopupDWNRequestAccess]: web5.dwn.requestAccess,
 	};
 
 	if (!(name in routes))

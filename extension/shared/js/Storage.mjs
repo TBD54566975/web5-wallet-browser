@@ -118,5 +118,6 @@ if (isBackground()) {
 		}
 	};
 }
+export let permissionsStorage = new StorageWrapper("permissions", browser.storage.local, [ ]);
 export let popupStorage = new StorageWrapper("popup", browser.storage.session, [ ]);
 export let profilesStorage = new StorageWrapper("profiles", browser.storage.local, [ ]);
