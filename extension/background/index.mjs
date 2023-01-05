@@ -1,6 +1,8 @@
-import { browser } from "/shared/js/Extension.mjs";
+import { takeFirstMatching } from "/shared/js/Array.mjs";
+import { generateDID } from "/shared/js/DID.mjs";
+import { browser, sendToContentScript } from "/shared/js/Extension.mjs";
 import { createProfile, profileForName } from "/shared/js/Profile.mjs";
-import { profilesStorage } from "/shared/js/Storage.mjs";
+import { popupStorage, profilesStorage } from "/shared/js/Storage.mjs";
 import { getHost } from "/shared/js/URL.mjs";
 
 /**
@@ -21,6 +23,35 @@ async function handleAPI({ id, name, args }, sender) {
 	routes[name].handleAPI(id, args, getHost(sender.url), sender.tab.windowId, sender.tab.id, sender.frameId, sender.documentId);
 }
 
+/**
+ * Handles messages from popups created by API calls.
+ * @param {Object} message - The message object sent from the popup.
+ * @param {string} message.name - The name of the message.
+ * @param {Object} message.args - The arguments for the message.
+ * @param {Object} sender - The web extension API object representing the sender of the message.
+ */
+async function handlePopup({ name, args }, sender) {
+	const routes = {
+	};
+
+	if (!(name in routes))
+		return;
+
+	let popup = null;
+	await popupStorage.update((popups) => {
+		popup = takeFirstMatching(popups, (popup) => popup.popupId === sender.tab.windowId);
+		return popups;
+	});
+	if (!popup)
+		return;
+
+	let result = await routes[name].handlePopup(args);
+
+	await sendToContentScript(popup.tabId, popup.frameId, popup.documentId, popup.messageId, result);
+
+	browser.windows.remove(popup.popupId);
+}
+
 browser.runtime.onInstalled.addListener((details) => {
 	if (details.reason === browser.runtime.OnInstalledReason.INSTALL) {
 		profilesStorage.update(async (profiles) => {
@@ -39,4 +70,5 @@ browser.runtime.onInstalled.addListener((details) => {
 
 browser.runtime.onMessage.addListener((message, sender) => {
 	handleAPI(message, sender);
+	handlePopup(message, sender);
 });
