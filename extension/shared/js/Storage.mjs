@@ -102,6 +102,15 @@ if (isBackground()) {
 		}
 
 		/**
+		 * Gets the value.
+		 * @return {Promise}
+		 */
+		async get() {
+			let wrapper = await this.#area.get({ [this.#key]: this.#fallback });
+			return wrapper[this.#key];
+		}
+
+		/**
 		 * @callback watchCallback
 		 * @param {*} value - The value.
 		 */
@@ -116,9 +125,7 @@ if (isBackground()) {
 					callback(changes[this.#key].newValue);
 			});
 
-			this.#area.get({ [this.#key]: this.#fallback }).then((wrapper) => {
-				callback(wrapper[this.#key]);
-			});
+			this.get().then(callback)
 		}
 	};
 }
