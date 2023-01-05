@@ -1,8 +1,4 @@
-import { Instance } from "/shared/js/DWN.mjs";
 import { browser, isBackground } from "/shared/js/Extension.mjs";
-import { once } from "/shared/js/Function.mjs";
-
-export let getDWN = once(async () => Instance.create({ }));
 
 let StorageWrapper;
 if (isBackground()) {

@@ -1,10 +1,9 @@
+import { createProfileInStorage, deleteProfileInStorage, profileForName } from "/background/Profile.mjs";
 import * as web5 from "/background/web5/index.mjs";
-import { removeAllMatching, takeFirstMatching } from "/shared/js/Array.mjs";
+import { takeFirstMatching } from "/shared/js/Array.mjs";
 import { ActionCreateProfile, ActionDeleteProfile, PopupDWNRequestAccess } from "/shared/js/Constants.mjs";
-import { generateDID } from "/shared/js/DID.mjs";
 import { browser, sendToContentScript } from "/shared/js/Extension.mjs";
-import { createProfile, profileForName } from "/shared/js/Profile.mjs";
-import { popupStorage, profilesStorage } from "/shared/js/Storage.mjs";
+import { popupStorage } from "/shared/js/Storage.mjs";
 import { getHost } from "/shared/js/URL.mjs";
 
 /**
@@ -75,40 +74,10 @@ async function handleAction({ name, args }) {
 	}
 }
 
-/**
- * Creates a profile object inside `profilesStorage`.
- * @param {string} name - The name of the profile to create.
- * @return {Promise}
- */
-async function createProfileInStorage(name) {
-	return profilesStorage.update(async (profiles) => {
-		if (!profileForName(profiles, name)) {
-			let profile = await createProfile(name);
-			profiles.push(profile);
-		}
-		return profiles;
-	});
-}
-
-/**
- * Deletes a profile object inside `profilesStorage`.
- * @param {string} did - The did of the profile to delete.
- * @return {Promise}
- */
-async function deleteProfileInStorage(did) {
-	return profilesStorage.update(async (profiles) => {
-		removeAllMatching(profiles, (profile) => profile.did === did);
-		return profiles;
-	});
-}
-
 browser.runtime.onInstalled.addListener((details) => {
 	if (details.reason === browser.runtime.OnInstalledReason.INSTALL) {
-		profilesStorage.update(async (profiles) => {
-			for (let messageKey of [ "profile_personal_name", "profile_social_name", "profile_work_name" ])
-				await createProfileInStorage(browser.i18n.getMessage(messageKey));
-			return profiles;
-		});
+		for (let messageKey of [ "profile_personal_name", "profile_social_name", "profile_work_name" ])
+			createProfileInStorage(browser.i18n.getMessage(messageKey));
 	}
 });
 

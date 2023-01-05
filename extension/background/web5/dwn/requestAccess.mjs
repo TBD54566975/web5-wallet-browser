@@ -1,7 +1,7 @@
+import { createPermissionInStorage, permissionForHost } from "/background/Permission.mjs";
 import { createAPIPopup } from "/background/Popup.mjs";
 import { PopupDWNRequestAccess } from "/shared/js/Constants.mjs";
 import { sendToContentScript } from "/shared/js/Extension.mjs";
-import { createPermission, permissionExists, permissionForHost } from "/shared/js/Permission.mjs";
 import { permissionsStorage } from "/shared/js/Storage.mjs";
 
 /**
@@ -33,12 +33,7 @@ export async function handleAPI(messageId, { }, host, windowId, tabId, frameId, 
  * @param {string} args.isAllowed - Whether access was allowed or denied.
  */
 export async function handlePopup({ host, did, isAllowed }) {
-	await permissionsStorage.update(async (permissions) => {
-		let permission = await createPermission(host, did, isAllowed);
-		if (!permissionExists(permissions, permission))
-			permissions.push(permission);
-		return permissions;
-	});
+	await createPermissionInStorage(host, did, isAllowed);
 
 	return { isAllowed };
 }

@@ -1,13 +1,4 @@
 /**
- * Creates a permission object for `permissionsStorage`.
- * @param {string} name - The name of the permission.
- * @return {Object}
- */
-export async function createPermission(host, did, isAllowed) {
-	return { host, did, isAllowed };
-}
-
-/**
  * Checks if a matching permission already exists.
  * @param {string} permissions - The permissions.
  * @param {string} permission - The permission.
