@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* add any global CSS overrides, then `npm run css` */
+
+body {
+	overscroll-behavior: none;
+}
