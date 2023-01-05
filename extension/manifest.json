@@ -26,6 +26,11 @@
 		"type": "module"
 	},
 
+	"options_ui": {
+		"page": "/options_ui/index.html",
+		"open_in_tab": true
+	},
+
 	"content_scripts": [
 		{
 			"js": [ "/content_scripts/web5_bridge.js" ],

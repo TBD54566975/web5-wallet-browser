@@ -7,7 +7,13 @@ import { generateDID } from "/shared/js/DID.mjs";
  */
 export async function createProfile(name) {
 	let { did, privateJWK, publicJWK } = await generateDID();
-	return { did, name, privateJWK, publicJWK };
+	return {
+		did,
+		name,
+		privateJWK,
+		publicJWK,
+		date: (new Date).toISOString(),
+	};
 }
 
 /**
