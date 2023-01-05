@@ -31,6 +31,9 @@
 		"open_in_tab": true
 	},
 
+	"action": {
+	},
+
 	"content_scripts": [
 		{
 			"js": [ "/content_scripts/web5_bridge.js" ],

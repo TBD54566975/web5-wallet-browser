@@ -117,3 +117,7 @@ browser.runtime.onMessage.addListener((message, sender) => {
 	handlePopup(message, sender);
 	handleAction(message);
 });
+
+browser.action.onClicked.addListener(() => {
+	browser.runtime.openOptionsPage();
+});
