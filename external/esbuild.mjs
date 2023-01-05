@@ -3,8 +3,8 @@ import { NodeModulesPolyfillPlugin } from "@esbuild-plugins/node-modules-polyfil
 import { NodeGlobalsPolyfillPlugin } from "@esbuild-plugins/node-globals-polyfill";
 
 esbuild.build({
-	entryPoints: [ "./bundle.mjs" ],
-	outfile: "../extension/external/bundle.mjs",
+	entryPoints: [ "./background.mjs" ],
+	outfile: "../extension/external/background.mjs",
 	platform: "browser",
 	format: "esm",
 	bundle: true,

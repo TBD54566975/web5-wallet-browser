@@ -1,8 +1,8 @@
-import { CollectionsQuery, CollectionsWrite, generateDWNSignature} from "/shared/js/DWN.mjs";
+import { CollectionsQuery, CollectionsWrite, generateDWNSignature, getDWN } from "/background/DWN.mjs";
+import { permissionForHost } from "/background/Permission.mjs";
+import { profileForDID } from "/background/Profile.mjs";
 import { sendToContentScript } from "/shared/js/Extension.mjs";
-import { permissionForHost } from "/shared/js/Permission.mjs";
-import { profileForDID } from "/shared/js/Profile.mjs";
-import { getDWN, permissionsStorage, profilesStorage } from "/shared/js/Storage.mjs";
+import { permissionsStorage, profilesStorage } from "/shared/js/Storage.mjs";
 
 /**
  * Handler for calls to `web5.dwn.processMessage`.

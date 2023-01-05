@@ -1,7 +1,5 @@
 import { parseDID } from "/shared/js/DID.mjs";
 
-export { CollectionsQuery, CollectionsWrite, DWN as Instance } from "/external/bundle.mjs";
-
 /**
  * Generates a DWN signature for use when applying messages.
  * @param {string} did - The DID of the profile applying the message.

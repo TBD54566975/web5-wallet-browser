@@ -1,25 +1,7 @@
-import { generateDID } from "/shared/js/DID.mjs";
-
-/**
- * Creates a profile object for `profilesStorage`.
- * @param {string} name - The name of the profile.
- * @return {Object}
- */
-export async function createProfile(name) {
-	let { did, privateJWK, publicJWK } = await generateDID();
-	return {
-		did,
-		name,
-		privateJWK,
-		publicJWK,
-		date: (new Date).toISOString(),
-	};
-}
-
 /**
  * Finds the first matching profile.
  * @param {Array} profiles - The profiles.
- * @param {string} did - The did to match.
+ * @param {string} did - The DID to match.
  * @return {Object}
  */
 export function profileForDID(profiles, did) {
