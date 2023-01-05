@@ -1,4 +1,8 @@
 {
 	"extension_name": { "message": "Web5 Wallet" },
-	"extension_description": { "message": "injects features supporting a Web5 Wallet" }
+	"extension_description": { "message": "injects features supporting a Web5 Wallet" },
+
+	"profile_personal_name": { "message": "Personal" },
+	"profile_social_name": { "message": "Social" },
+	"profile_work_name": { "message": "Work" }
 }

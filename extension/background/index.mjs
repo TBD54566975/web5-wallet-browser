@@ -1,4 +1,6 @@
 import { browser } from "/shared/js/Extension.mjs";
+import { createProfile, profileForName } from "/shared/js/Profile.mjs";
+import { profilesStorage } from "/shared/js/Storage.mjs";
 import { getHost } from "/shared/js/URL.mjs";
 
 /**
@@ -18,6 +20,22 @@ async function handleAPI({ id, name, args }, sender) {
 
 	routes[name].handleAPI(id, args, getHost(sender.url), sender.tab.windowId, sender.tab.id, sender.frameId, sender.documentId);
 }
+
+browser.runtime.onInstalled.addListener((details) => {
+	if (details.reason === browser.runtime.OnInstalledReason.INSTALL) {
+		profilesStorage.update(async (profiles) => {
+			for (let messageKey of [ "profile_personal_name", "profile_social_name", "profile_work_name" ]) {
+				let name = browser.i18n.getMessage(messageKey);
+				if (profileForName(profiles, name))
+					continue;
+
+				let profile = await createProfile(name);
+				profiles.push(profile);
+			}
+			return profiles;
+		});
+	}
+});
 
 browser.runtime.onMessage.addListener((message, sender) => {
 	handleAPI(message, sender);

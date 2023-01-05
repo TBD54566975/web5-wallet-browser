@@ -118,3 +118,4 @@ if (isBackground()) {
 		}
 	};
 }
+export let profilesStorage = new StorageWrapper("profiles", browser.storage.local, [ ]);
