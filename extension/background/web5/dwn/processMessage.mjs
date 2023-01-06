@@ -19,7 +19,7 @@ import { permissionsStorage, profilesStorage } from "/shared/js/Storage.mjs";
  * @param {number} frameId - The identifier of the frame calling the API.
  * @param {string} documentId - The identifier of the document calling the API.
  */
-export async function handleAPI(messageId, { message }, host, windowId, tabId, frameId, documentId) {
+export async function handleWeb5Message(messageId, { message }, host, windowId, tabId, frameId, documentId) {
 	let permissions = await permissionsStorage.get();
 	let permission = permissionForHost(permissions, host);
 	if (!permission?.isAllowed) {
