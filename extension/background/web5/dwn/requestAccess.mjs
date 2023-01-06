@@ -14,7 +14,7 @@ import { permissionsStorage } from "/shared/js/Storage.mjs";
  * @param {number} frameId - The identifier of the frame calling the API.
  * @param {string} documentId - The identifier of the document calling the API.
  */
-export async function handleAPI(messageId, { }, host, windowId, tabId, frameId, documentId) {
+export async function handleWeb5Message(messageId, { }, host, windowId, tabId, frameId, documentId) {
 	let permissions = await permissionsStorage.get();
 	let permission = permissionForHost(permissions, host);
 	if (permission) {
@@ -32,7 +32,7 @@ export async function handleAPI(messageId, { }, host, windowId, tabId, frameId, 
  * @param {string} args.did - The DID of the profile that was allowed/denied access.
  * @param {string} args.isAllowed - Whether access was allowed or denied.
  */
-export async function handlePopup({ host, did, isAllowed }) {
+export async function handlePopupMessage({ host, did, isAllowed }) {
 	await createPermissionInStorage(host, did, isAllowed);
 
 	return { isAllowed };

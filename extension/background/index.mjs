@@ -14,7 +14,7 @@ import { getHost } from "/shared/js/URL.mjs";
  * @param {Object} message.args - The arguments for the message.
  * @param {Object} sender - The web extension API object representing the sender of the message.
  */
-async function handleAPI({ id, name, args }, sender) {
+async function handleWeb5Message({ id, name, args }, sender) {
 	const routes = {
 		"web5.dwn.processMessage": web5.dwn.processMessage,
 		"web5.dwn.requestAccess": web5.dwn.requestAccess,
@@ -23,7 +23,7 @@ async function handleAPI({ id, name, args }, sender) {
 	if (!(name in routes))
 		return;
 
-	routes[name].handleAPI(id, args, getHost(sender.url), sender.tab.windowId, sender.tab.id, sender.frameId, sender.documentId);
+	routes[name].handleWeb5Message(id, args, getHost(sender.url), sender.tab.windowId, sender.tab.id, sender.frameId, sender.documentId);
 }
 
 /**
@@ -33,7 +33,7 @@ async function handleAPI({ id, name, args }, sender) {
  * @param {Object} message.args - The arguments for the message.
  * @param {Object} sender - The web extension API object representing the sender of the message.
  */
-async function handlePopup({ name, args }, sender) {
+async function handlePopupMessage({ name, args }, sender) {
 	const routes = {
 		[PopupDWNRequestAccess]: web5.dwn.requestAccess,
 	};
@@ -49,7 +49,7 @@ async function handlePopup({ name, args }, sender) {
 	if (!popup)
 		return;
 
-	let result = await routes[name].handlePopup(args);
+	let result = await routes[name].handlePopupMessage(args);
 
 	await sendToContentScript(popup.tabId, popup.frameId, popup.documentId, popup.messageId, result);
 
@@ -57,12 +57,12 @@ async function handlePopup({ name, args }, sender) {
 }
 
 /**
- * Handles messages from the options page.
- * @param {Object} message - The message object sent from the popup.
+ * Handles messages from extension pages.
+ * @param {Object} message - The message object sent from the extension page.
  * @param {string} message.name - The name of the message.
  * @param {Object} message.args - The arguments for the message.
  */
-async function handleAction({ name, args }) {
+async function handleActionMessage({ name, args }) {
 	switch (name) {
 	case ActionCreateProfile:
 		createProfileInStorage(args.name);
@@ -82,9 +82,9 @@ browser.runtime.onInstalled.addListener((details) => {
 });
 
 browser.runtime.onMessage.addListener((message, sender) => {
-	handleAPI(message, sender);
-	handlePopup(message, sender);
-	handleAction(message);
+	handleWeb5Message(message, sender);
+	handlePopupMessage(message, sender);
+	handleActionMessage(message);
 });
 
 browser.action.onClicked.addListener(() => {
