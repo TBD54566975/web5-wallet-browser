@@ -1,6 +1,6 @@
 import { createProfileInStorage, deleteProfileInStorage, profileForName } from "/background/Profile.mjs";
 import * as web5 from "/background/web5/index.mjs";
-import { takeFirstMatching } from "/shared/js/Array.mjs";
+import { takeAllMatching } from "/shared/js/Array.mjs";
 import { ActionCreateProfile, ActionDeleteProfile, PopupDWNRequestAccess } from "/shared/js/Constants.mjs";
 import { browser, sendToContentScript } from "/shared/js/Extension.mjs";
 import { popupStorage } from "/shared/js/Storage.mjs";
@@ -41,19 +41,20 @@ async function handlePopupMessage({ name, args }, sender) {
 	if (!(name in routes))
 		return;
 
-	let popup = null;
+	let matching = [ ];
 	await popupStorage.update((popups) => {
-		popup = takeFirstMatching(popups, (popup) => popup.popupId === sender.tab.windowId);
+		matching = takeAllMatching(popups, (popup) => popup.popupId === sender.tab.windowId);
 		return popups;
 	});
-	if (!popup)
+	if (matching.length === 0)
 		return;
 
 	let result = await routes[name].handlePopupMessage(args);
 
-	await sendToContentScript(popup.tabId, popup.frameId, popup.documentId, popup.messageId, result);
+	for (let popup of matching)
+		sendToContentScript(popup.tabId, popup.frameId, popup.documentId, popup.messageId, result);
 
-	browser.windows.remove(popup.popupId);
+	browser.windows.remove(sender.tab.windowId);
 }
 
 /**

@@ -32,8 +32,19 @@ export async function createAPIPopup(name, params, messageId, windowId, tabId, f
 		focused: true,
 	});
 
-	popupStorage.update((popups) => {
+	let popupsToClose = new Set;
+
+	await popupStorage.update(async (popups) => {
+		for (let existing of popups) {
+			if (existing.url === url.href) {
+				popupsToClose.add(existing.popupId);
+
+				existing.popupId = popup.id;
+			}
+		}
+
 		popups.push({
+			url: url.href,
 			popupId: popup.id,
 			tabId,
 			frameId,
@@ -42,6 +53,9 @@ export async function createAPIPopup(name, params, messageId, windowId, tabId, f
 		});
 		return popups;
 	});
+
+	for (let popupId of popupsToClose)
+		browser.windows.remove(popupId);
 }
 
 browser.tabs.onRemoved.addListener((tabId) => {
