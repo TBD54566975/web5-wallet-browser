@@ -18,6 +18,14 @@
 	"options_Profiles_modal_Create_button": { "message": "Create" },
 	"options_Profiles_modal_Close_button": { "message": "Close" },
 
+	"options_Permissions_heading": { "message": "Permissions" },
+	"options_Permissions_description": { "message": "See information about all of your permissions, or delete any you no longer want." },
+	"options_Permissions_table_Profile_label": { "message": "Profile" },
+	"options_Permissions_table_Host_label": { "message": "Host" },
+	"options_Permissions_table_Access_label": { "message": "Access" },
+	"options_Permissions_table_Delete_label": { "message": "Delete" },
+	"options_Permissions_table_Delete_button": { "message": "Delete" },
+
 	"profile_personal_name": { "message": "Personal" },
 	"profile_social_name": { "message": "Social" },
 	"profile_work_name": { "message": "Work" },

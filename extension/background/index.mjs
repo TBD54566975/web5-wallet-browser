@@ -1,7 +1,8 @@
+import { deletePermissionInStorage, updatePermissionInStorage } from "/background/Permission.mjs";
 import { createProfileInStorage, deleteProfileInStorage, profileForName } from "/background/Profile.mjs";
 import * as web5 from "/background/web5/index.mjs";
 import { takeAllMatching } from "/shared/js/Array.mjs";
-import { ActionCreateProfile, ActionDeleteProfile, PopupDWNRequestAccess } from "/shared/js/Constants.mjs";
+import { ActionChangePermission, ActionCreateProfile, ActionDeletePermission, ActionDeleteProfile, PopupDWNRequestAccess } from "/shared/js/Constants.mjs";
 import { browser, sendToContentScript } from "/shared/js/Extension.mjs";
 import { popupStorage } from "/shared/js/Storage.mjs";
 import { getHost } from "/shared/js/URL.mjs";
@@ -65,8 +66,16 @@ async function handlePopupMessage({ name, args }, sender) {
  */
 async function handleActionMessage({ name, args }) {
 	switch (name) {
+	case ActionChangePermission:
+		updatePermissionInStorage(args.host, args.did, args.isAllowed);
+		return;
+
 	case ActionCreateProfile:
 		createProfileInStorage(args.name);
+		return;
+
+	case ActionDeletePermission:
+		deletePermissionInStorage(args.host, args.did);
 		return;
 
 	case ActionDeleteProfile:
