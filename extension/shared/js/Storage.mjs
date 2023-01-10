@@ -23,6 +23,16 @@ if (isBackground()) {
 		}
 
 		/**
+		 * Gets the key representing the stored value.
+		 */
+		get key() { return this.#key; }
+
+		/**
+		 * Gets the fallback for the stored value.
+		 */
+		get fallback() { return this.#fallback; }
+
+		/**
 		 * Gets the value (after all previous operations are done).
 		 * @return {Promise}
 		 */
@@ -82,9 +92,12 @@ if (isBackground()) {
 } else {
 	/** Provides read access to the value for the given key in the given area. */
 	StorageWrapper = class StorageWrapper {
+		static #unset = Symbol("unset");
 		#area;
 		#key;
+		#value = StorageWrapper.#unset;
 		#fallback;
+		#callbacks = [ ];
 
 		/**
 		 * @param {string} key - The name of the value.
@@ -98,12 +111,25 @@ if (isBackground()) {
 		}
 
 		/**
+		 * Gets the key representing the stored value.
+		 */
+		get key() { return this.#key; }
+
+		/**
+		 * Gets the fallback for the stored value.
+		 */
+		get fallback() { return this.#fallback; }
+
+		/**
 		 * Gets the value.
 		 * @return {Promise}
 		 */
 		async get() {
-			let wrapper = await this.#area.get({ [this.#key]: this.#fallback });
-			return wrapper[this.#key];
+			if (this.#value === StorageWrapper.#unset) {
+				let wrapper = await this.#area.get({ [this.#key]: this.#fallback });
+				this.#value = wrapper[this.#key];
+			}
+			return this.#value;
 		}
 
 		/**
@@ -116,10 +142,17 @@ if (isBackground()) {
 		 * @return {Promise}
 		 */
 		watch(callback) {
-			this.#area.onChanged.addListener((changes) => {
-				if (this.#key in changes)
-					callback(changes[this.#key].newValue);
-			});
+			if (this.#callbacks.length === 0) {
+				this.#area.onChanged.addListener((changes) => {
+					if (this.#key in changes) {
+						this.#value = changes[this.#key].newValue;
+
+						for (let callback of this.#callbacks)
+							callback(this.#value);
+					}
+				});
+			}
+			this.#callbacks.push(callback);
 
 			this.get().then(callback)
 		}
