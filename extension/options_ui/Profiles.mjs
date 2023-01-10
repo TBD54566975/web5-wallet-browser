@@ -72,7 +72,7 @@ profilesStorage.watch((profiles) => {
 		});
 
 		let dateText = rowElement.querySelector("[data-value=date] span");
-		dateText.textContent = profile.date;
+		dateText.textContent = (new Date(profile.date)).toLocaleString();
 
 		let deleteText = rowElement.querySelector("[data-value=delete] span");
 		deleteText.textContent = browser.i18n.getMessage("options_Profiles_table_Delete_button");
