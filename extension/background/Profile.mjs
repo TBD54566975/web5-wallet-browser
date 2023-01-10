@@ -17,7 +17,7 @@ async function createProfile(name) {
 		name,
 		privateJWK,
 		publicJWK,
-		date: (new Date).toISOString(),
+		date: (new Date).getTime(),
 	};
 }
 
