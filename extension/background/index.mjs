@@ -2,9 +2,9 @@ import { deletePermissionInStorage, updatePermissionInStorage } from "/backgroun
 import { createProfileInStorage, deleteProfileInStorage, profileForName } from "/background/Profile.mjs";
 import * as web5 from "/background/web5/index.mjs";
 import { takeAllMatching } from "/shared/js/Array.mjs";
-import { ActionChangePermission, ActionCreateProfile, ActionDeletePermission, ActionDeleteProfile, PopupDWNRequestAccess } from "/shared/js/Constants.mjs";
+import { ActionChangePermission, ActionCreateProfile, ActionDeletePermission, ActionDeleteProfile, DebugModifyStorage, PopupDWNRequestAccess } from "/shared/js/Constants.mjs";
 import { browser, sendToContentScript } from "/shared/js/Extension.mjs";
-import { popupStorage } from "/shared/js/Storage.mjs";
+import { permissionsStorage, popupStorage, profilesStorage } from "/shared/js/Storage.mjs";
 import { getHost } from "/shared/js/URL.mjs";
 
 /**
@@ -81,6 +81,17 @@ async function handleActionMessage({ name, args }) {
 	case ActionDeleteProfile:
 		deleteProfileInStorage(args.did);
 		return;
+
+	case DebugModifyStorage:
+		switch (args.key) {
+		case permissionsStorage.key:
+			permissionsStorage.update(() => args.value);
+			return;
+
+		case profilesStorage.key:
+			profilesStorage.update(() => args.value);
+			return;
+		}
 	}
 }
 
